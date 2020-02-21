@@ -7,6 +7,9 @@
 
 $setglobal c12_interest_rate  medium
 
+set c12_interest_rate(scen12) selected scenario switch for c12_interest_rate
+/ %c12_interest_rate% / ;
+
 table f12_interest(t_all,scen12)  Interest rate scenarios (% per yr)
 $ondelim
 $include "./modules/12_interest_rate/input/f12_interest_rate.cs3"

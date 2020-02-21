@@ -9,11 +9,16 @@ $setglobal c09_pop_scenario  SSP2
 *   options:   SSP: "SSP1", "SSP2", "SP3", "SSP4", "SSP5"
 *              SDP: "SDP"
 *             SRES: "a1", "a2", "b1", "b2"
+set c09_pop_scenario(pop_scen09) selected scenario switch for c09_pop_scenario
+/ %c09_pop_scenario% / ;
 
 $setglobal c09_gdp_scenario  SSP2
 *   options:   SSP: "SSP1", "SSP2", "SSP3", "SSP4", "SSP5"
 *              SDP: "SDP"
 *             SRES: "a1", "a2", "b1", "b2"
+
+set c09_gdp_scenario(pop_scen09) selected scenario switch for c09_gdp_scenario
+/ %c09_gdp_scenario% / ;
 
 
 table f09_gdp_ppp_iso(t_all,iso,gdp_scen09) Income in purchasing power parity (mio. USD05PPP per yr)
