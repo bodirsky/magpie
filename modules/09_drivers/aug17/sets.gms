@@ -7,6 +7,7 @@
 sets
 
    pop_scen09  Population scenario
+
        / SSP1, SSP2, SSP3, SSP4, SSP5, SDP,
          a1, a2, b1, b2 /
 
