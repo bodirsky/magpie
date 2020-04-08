@@ -1,4 +1,4 @@
-*** |  (C) 2008-2019 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2020 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -95,7 +95,7 @@ if(( p15_modelstat(t)) > 2 and (p15_modelstat(t) ne 7 ),
 display "finished iteration number ", p15_iteration_counter;
 display "convergence measure:",p15_convergence_measure;
 
-if (s15_elastic_demand * (1-sum(sameas(t_past,t),1)) =1,
+if (s15_elastic_demand = 1 AND m_year(t) > sm_fix_SSP2,
   display "elastic demand model is activated";
   if ((p15_convergence_measure(t) > s15_convergence and p15_iteration_counter(t) <= s15_maxiter),
 
@@ -240,8 +240,8 @@ if(s15_exo_waste = 1,
 * waste reduction target, i.e. only for values that are higher than the target:
 
 p15_demand2intake_ratio_scen(t,i)$(p15_demand2intake_ratio(t,i) > s15_waste_scen )
-                    = p15_demand2intake_ratio(t,i)*(1-i15_exo_foodscen_fader(t))
-                      + s15_waste_scen*i15_exo_foodscen_fader(t);
+                    = p15_demand2intake_ratio(t,i)*(1-i15_exo_foodscen_fader(t,i))
+                      + s15_waste_scen*i15_exo_foodscen_fader(t,i);
 
 p15_kcal_pc_calibrated_orig(t,i,kfo) = p15_kcal_pc_calibrated(t,i,kfo);
 p15_kcal_pc_calibrated(t,i,kfo)$(p15_demand2intake_ratio(t,i) >0 ) = p15_kcal_pc_calibrated_orig(t,i,kfo)*(
@@ -285,8 +285,8 @@ i15_kcal_pc_scen_target(t,i,kfo) = (f15_calib_fsupply(i)*f15_overcons_FAOwaste(i
 *' convergence:
 
 p15_kcal_pc_calibrated_orig(t,i,kfo) = p15_kcal_pc_calibrated(t,i,kfo);
-p15_kcal_pc_calibrated(t,i,kfo) = p15_kcal_pc_calibrated_orig(t,i,kfo) * (1-i15_exo_foodscen_fader(t))
-                        + i15_kcal_pc_scen_target(t,i,kfo) * i15_exo_foodscen_fader(t);
+p15_kcal_pc_calibrated(t,i,kfo) = p15_kcal_pc_calibrated_orig(t,i,kfo) * (1-i15_exo_foodscen_fader(t,i))
+                        + i15_kcal_pc_scen_target(t,i,kfo) * i15_exo_foodscen_fader(t,i);
 
 
 );
