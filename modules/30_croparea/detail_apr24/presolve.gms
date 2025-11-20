@@ -20,12 +20,13 @@ else
 *' @stop
 
 * only activate constraints which are binding
+
 if (s30_implementation = 1,
-  rotamax_red30(rotamax30) = yes$(i30_rotation_rules(t,rotamax30) < 1);
-  rotamin_red30(rotamin30) = yes$(i30_rotation_rules(t,rotamin30) > 0);
+  rotamax_red30(rotamax30) = yes$(sum(i, i30_rotation_rules(t,i,rotamax30)) < sum(i, 1));
+  rotamin_red30(rotamin30) = yes$(sum(i, i30_rotation_rules(t,i,rotamin30) > 0));
 else
-  rotamax_red30(rotamax30) = yes$(i30_rotation_incentives(t,rotamax30) > 0);
-  rotamin_red30(rotamin30) = yes$(i30_rotation_incentives(t,rotamin30) > 0);
+  rotamax_red30(rotamax30) = yes$(sum(i, i30_rotation_incentives(t,i,rotamax30) > 0) and sum(i, i30_rotation_rules(t,i,rotamax30) < sum(i, 1));
+  rotamin_red30(rotamin30) = yes$(sum(i, i30_rotation_incentives(t,i,rotamin30) > 0) and sum(i, i30_rotation_rules(t,i,rotamin30) > 0);
 );
 
 * create betr target and penalty scenario
