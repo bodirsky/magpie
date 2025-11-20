@@ -35,20 +35,20 @@
 
   q30_rotation_max(j2,rotamax_red30)$(s30_implementation = 1) ..
     sum((rota_kcr30(rotamax_red30,kcr),w), vm_area(j2,kcr,w)) =l=
-      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i,j)), i30_rotation_rules(ct,i,rotamax_red30));
+      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i2,j2)), i30_rotation_rules(ct,i2,rotamax_red30));
 
   q30_rotation_min(j2,rotamin_red30)$(s30_implementation = 1) ..
     sum((rota_kcr30(rotamin_red30,kcr),w), vm_area(j2,kcr,w)) =g=
-      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i,j)), i30_rotation_rules(ct,i,rotamin_red30));
+      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i2,j2)), i30_rotation_rules(ct,i2,rotamin_red30));
 
 * 'Penalty-based rotational constraints (s30_implementation = 0):
 
   q30_rotation_penalty(i2) ..
     vm_rotation_penalty(i2) =g=
       sum(cell(i2,j2),
-        sum(rota30, v30_penalty(j2,rota30) * sum(ct, i30_rotation_incentives(ct,i,rota30)))
+        sum(rota30, v30_penalty(j2,rota30) * sum(ct, i30_rotation_incentives(ct,i2,rota30)))
       + sum(rotamax_red30, v30_penalty_max_irrig(j2,rotamax_red30) 
-      * sum(ct, i30_rotation_incentives(ct,i,rotamax_red30)))
+      * sum(ct, i30_rotation_incentives(ct,i2,rotamax_red30)))
       + v30_betr_missing(j2) * sum(ct, i30_betr_penalty(ct))
       );
 
@@ -59,7 +59,7 @@
   q30_rotation_max2(j2,rotamax_red30)$(s30_implementation = 0) ..
     v30_penalty(j2,rotamax_red30) =g=
       sum((rota_kcr30(rotamax_red30,kcr),w),vm_area(j2,kcr,w))
-      - sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i,j)), i30_rotation_rules(ct,i,rotamax_red30));
+      - sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i2,j2)), i30_rotation_rules(ct,i2,rotamax_red30));
 
 
 *' Minimum constraints apply penalties when a certain mimimum
@@ -68,7 +68,7 @@
 
   q30_rotation_min2(j2,rotamin_red30)$(s30_implementation = 0) ..
     v30_penalty(j2,rotamin_red30) =g=
-      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i,j)),i30_rotation_rules(ct,i,rotamin_red30))
+      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i2,j2)),i30_rotation_rules(ct,i2,rotamin_red30))
       - sum((rota_kcr30(rotamin_red30,kcr),w), vm_area(j2,kcr,w));
 
 
@@ -79,7 +79,7 @@
   q30_rotation_max_irrig(j2,rotamax_red30)$(s30_implementation = 0) ..
     v30_penalty_max_irrig(j2,rotamax_red30) =g=
       sum((rota_kcr30(rotamax_red30,kcr)), vm_area(j2,kcr,"irrigated"))
-      - vm_AEI(j2) * sum((ct, cell(i,j)), i30_rotation_rules(ct,i,rotamax_red30));
+      - vm_AEI(j2) * sum((ct, cell(i2,j2)), i30_rotation_rules(ct,i2,rotamax_red30));
 
 *' End of penalty based rotational constraints.
 *'
