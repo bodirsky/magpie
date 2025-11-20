@@ -6,10 +6,10 @@
 *** |  Contact: magpie@pik-potsdam.de
 
 parameters
- i30_rotation_rules(t_all,rota30)       Rotational constraints (1)
- i30_rotation_incentives(t_all,rota30)  Penalty for violating rotational constraints (USD17MER per ha)
+ s30_implementation              Switch for rule-based (1) or penalty-based (0) implementation of rotation scenarios
+ i30_rotation_rules(t_all,i,rota30)       Rotational constraints (1)
+ i30_rotation_incentives(t_all,i,rota30)  Penalty for violating rotational constraints (USD17MER per ha)
  i30_rotation_scenario_fader(t_all)     Crop rotation scenario fader (1)
- i30_implementation              Switch for rule-based (1) or penalty-based (0) implementation of rotation scenarios
  i30_betr_scenario_fader(t_all)         Bioenergy land scenario fader (1)
  i30_betr_target(t,j)                   Target share for bioenergy land on total cropland (1)
  i30_betr_penalty(t)                    Penalty for violation of betr target (USD17MER per ha)

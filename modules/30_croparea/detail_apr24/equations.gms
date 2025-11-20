@@ -23,32 +23,32 @@
       vm_land(j2,"crop") * sum(ct, i30_betr_target(ct,j2)) - vm_area(j2,"betr","rainfed");
 
 *' Rotational constraints prevent over-specialization. In this realization,
-*' they are either implemented via rules (i30_implementation = 1) or 
-*' a penalty payment if the constraints are violated (i30_implementation = 0).
+*' they are either implemented via rules (s30_implementation = 1) or 
+*' a penalty payment if the constraints are violated (s30_implementation = 0).
 
-*' Rule-based rotational constraints (i30_implementation = 1):
+*' Rule-based rotational constraints (s30_implementation = 1):
 
 *' Minimum and maximum rotational constraints limit
 *' the placing of crops. These rotational constraints reflect
 *' crop rotations limiting the share a specific crop can cover of the total area
 *' of a cluster.
 
-  q30_rotation_max(j2,rotamax_red30)$(i30_implementation = 1) ..
+  q30_rotation_max(j2,rotamax_red30)$(s30_implementation = 1) ..
     sum((rota_kcr30(rotamax_red30,kcr),w), vm_area(j2,kcr,w)) =l=
-      sum((kcr,w),vm_area(j2,kcr,w)) * sum(ct,i30_rotation_rules(ct,rotamax_red30));
+      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i,j)), i30_rotation_rules(ct,i,rotamax_red30));
 
-  q30_rotation_min(j2,rotamin_red30)$(i30_implementation = 1) ..
+  q30_rotation_min(j2,rotamin_red30)$(s30_implementation = 1) ..
     sum((rota_kcr30(rotamin_red30,kcr),w), vm_area(j2,kcr,w)) =g=
-      sum((kcr,w),vm_area(j2,kcr,w)) * sum(ct,i30_rotation_rules(ct,rotamin_red30));
+      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i,j)), i30_rotation_rules(ct,i,rotamin_red30));
 
-* 'Penalty-based rotational constraints (i30_implementation = 0):
+* 'Penalty-based rotational constraints (s30_implementation = 0):
 
   q30_rotation_penalty(i2) ..
     vm_rotation_penalty(i2) =g=
       sum(cell(i2,j2),
-        sum(rota30, v30_penalty(j2,rota30) * sum(ct, i30_rotation_incentives(ct,rota30)))
+        sum(rota30, v30_penalty(j2,rota30) * sum(ct, i30_rotation_incentives(ct,i,rota30)))
       + sum(rotamax_red30, v30_penalty_max_irrig(j2,rotamax_red30) 
-      * sum(ct, i30_rotation_incentives(ct,rotamax_red30)))
+      * sum(ct, i30_rotation_incentives(ct,i,rotamax_red30)))
       + v30_betr_missing(j2) * sum(ct, i30_betr_penalty(ct))
       );
 
@@ -56,19 +56,19 @@
 *' share of the land. Below this share, negative benefits are
 *' avoided by defining the penalty to be positive.
 
-  q30_rotation_max2(j2,rotamax_red30)$(i30_implementation = 0) ..
+  q30_rotation_max2(j2,rotamax_red30)$(s30_implementation = 0) ..
     v30_penalty(j2,rotamax_red30) =g=
       sum((rota_kcr30(rotamax_red30,kcr),w),vm_area(j2,kcr,w))
-      - sum((kcr,w),vm_area(j2,kcr,w)) * sum(ct,i30_rotation_rules(ct,rotamax_red30));
+      - sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i,j)), i30_rotation_rules(ct,i,rotamax_red30));
 
 
 *' Minimum constraints apply penalties when a certain mimimum
 *' share of a group is not achieved. This is used to guarantee a minimum
 *' crop group diversity withing cells.
 
-  q30_rotation_min2(j2,rotamin_red30)$(i30_implementation = 0) ..
+  q30_rotation_min2(j2,rotamin_red30)$(s30_implementation = 0) ..
     v30_penalty(j2,rotamin_red30) =g=
-      sum((kcr,w),vm_area(j2,kcr,w)) * sum(ct,i30_rotation_rules(ct,rotamin_red30))
+      sum((kcr,w),vm_area(j2,kcr,w)) * sum((ct, cell(i,j)),i30_rotation_rules(ct,i,rotamin_red30))
       - sum((rota_kcr30(rotamin_red30,kcr),w), vm_area(j2,kcr,w));
 
 
@@ -76,12 +76,13 @@
 *' No minimum constraint is included for irrigated areas for computational
 *' reasons. Minimum constraints just need to be met on total areas.
 
-  q30_rotation_max_irrig(j2,rotamax_red30) ..
+  q30_rotation_max_irrig(j2,rotamax_red30)$(s30_implementation = 0) ..
     v30_penalty_max_irrig(j2,rotamax_red30) =g=
       sum((rota_kcr30(rotamax_red30,kcr)), vm_area(j2,kcr,"irrigated"))
-      - vm_AEI(j2) * sum(ct,i30_rotation_rules(ct,rotamax_red30));
+      - vm_AEI(j2) * sum((ct, cell(i,j)), i30_rotation_rules(ct,i,rotamax_red30));
 
-
+*' End of penalty based rotational constraints.
+*'
 *' The carbon stocks of the above ground carbon pools are calculated based on croparea and related carbon density.
 
   q30_carbon(j2,ag_pools) ..
