@@ -29,27 +29,6 @@ else
   rotamin_red30(rotamin30) = yes$(sum(i, i30_rotation_incentives(t,i,rotamin30) > 0) and sum(i, i30_rotation_rules(t,i,rotamin30)) > 0);
 );
 
-* create betr target and penalty scenario
-i30_betr_target(t,j) = (1-i30_betr_scenario_fader(t)) * 
-  (s30_betr_start * sum(cell(i,j), p30_country_weight(i))
-  + s30_betr_start_noselect * sum(cell(i,j), 1-p30_country_weight(i)))
- + i30_betr_scenario_fader(t)  * 
-  (s30_betr_target * sum(cell(i,j), p30_country_weight(i))
-  + s30_betr_target_noselect * sum(cell(i,j), 1-p30_country_weight(i)));
-
-if (m_year(t) <= s30_betr_scenario_start,
-  i30_betr_penalty(t) = 0;
-  v30_betr_missing.fx(j) = 0;
-else
-  i30_betr_penalty(t) = s30_betr_penalty;
-  if (i30_betr_penalty(t) > 0,
-    v30_betr_missing.lo(j) = 0;
-    v30_betr_missing.up(j) = Inf;
-  else
-    v30_betr_missing.fx(j) = 0;
-  );
-);
-
 *' Cropland growth constraint after SSP2 fix
 if(m_year(t) <= sm_fix_SSP2,
   v30_crop_area.up(i) = Inf;
