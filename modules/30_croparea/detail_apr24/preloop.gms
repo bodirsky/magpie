@@ -17,7 +17,6 @@ p30_country_weight(i) = sum(i_to_iso(i,iso), p30_country_switch(iso) * pm_avl_cr
 ** Trajectory for rotation scenarios
 * sigmoidal interpolation between start year and target year
 m_sigmoid_time_interpol(i30_rotation_scenario_fader,s30_rotation_scenario_start,s30_rotation_scenario_target,0,1);
-m_sigmoid_time_interpol(i30_betr_scenario_fader,s30_betr_scenario_start,s30_betr_scenario_target,0,1);
 
 ** Fader for rotational constraints
 i30_rotation_rules(t_all,i,rota30) =

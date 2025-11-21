@@ -14,14 +14,6 @@
   q30_prod(j2,kcr) ..
     vm_prod(j2,kcr) =e= sum(w, vm_area(j2,kcr,w) * vm_yld(j2,kcr,w));
 
-*' A penalty is applied for the violation of bioenergy tree (betr) rules.
-*' The penalty applies to the missing bioenergy tree land, i.e. where bioenergy tree land 
-*' is lower than a certain fraction of total cropland.
-
-  q30_betr_missing(j2)$(sum(ct, i30_betr_penalty(ct)) > 0) ..
-    v30_betr_missing(j2) =g=
-      vm_land(j2,"crop") * sum(ct, i30_betr_target(ct,j2)) - vm_area(j2,"betr","rainfed");
-
 *' Rotational constraints prevent over-specialization. In this realization,
 *' they are either implemented via rules (s30_implementation = 1) or 
 *' a penalty payment if the constraints are violated (s30_implementation = 0).
@@ -49,7 +41,6 @@
         sum(rota30, v30_penalty(j2,rota30) * sum(ct, i30_rotation_incentives(ct,i2,rota30)))
       + sum(rotamax_red30, v30_penalty_max_irrig(j2,rotamax_red30) 
       * sum(ct, i30_rotation_incentives(ct,i2,rotamax_red30)))
-      + v30_betr_missing(j2) * sum(ct, i30_betr_penalty(ct))
       );
 
 *' The penalty applies to the areas which exceed a certain maximum
