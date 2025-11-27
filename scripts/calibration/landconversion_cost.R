@@ -35,7 +35,7 @@ calibration_run <- function(putfolder, calib_magpie_name, logoption = 3, s_use_g
 
 # get ratio between modelled area and reference area
 
-getCalibFactor <- function(gdx_file, mode = "cost", calib_accuracy = 0.05, lowpass_filter = 1, histData = "FAO", cost_min = 0.2) {
+getCalibFactor <- function(gdx_file, mode = "cost", lowpass_filter = 1, histData = "FAO", cost_min = 0.2) {
   require(magclass)
   require(magpie4)
   require(gdx2)
@@ -78,7 +78,7 @@ getCalibFactor <- function(gdx_file, mode = "cost", calib_accuracy = 0.05, lowpa
     getNames(out) <- NULL
     
     # set reward to 0 if no cropland was lost in historic data set
-    out[shrLostHist < -calib_accuracy] <- 0
+    out[shrLostHist < 0] <- 0
     out[out < 0] <- 0
     out <- lowpass(out,i = lowpass_filter)
     out[,1,] <- 0
@@ -112,10 +112,10 @@ update_calib <- function(gdx_file, calib_accuracy = 0.01, lowpass_filter = 1, ca
   
   y <- readGDX(gdx_file,"t")
 
-  calib_correction_cost <- getCalibFactor(gdx_file, mode = "cost", calib_accuracy = calib_accuracy, lowpass_filter = lowpass_filter)
+  calib_correction_cost <- getCalibFactor(gdx_file, mode = "cost", lowpass_filter = lowpass_filter)
   calib_divergence_cost <- abs(calib_correction_cost - 1)
 
-  calib_correction_reward <- getCalibFactor(gdx_file, mode = "reward", calib_accuracy = calib_accuracy, lowpass_filter = lowpass_filter)
+  calib_correction_reward <- getCalibFactor(gdx_file, mode = "reward", lowpass_filter = lowpass_filter)
   calib_divergence_reward <- abs(calib_correction_reward)
   calib_divergence_reward[calib_correction_reward == 0] <- 0
   
