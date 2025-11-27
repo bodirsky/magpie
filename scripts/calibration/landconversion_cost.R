@@ -67,9 +67,9 @@ getCalibFactor <- function(gdx_file, mode = "cost", lowpass_filter = 1, histData
     out[out < 0] <- 1
     out <- lowpass(out,i = lowpass_filter)
   } else if (mode == "reward") {
-    shrLostHist <- new.magpie(getRegions(magpie), getYears(magpie), fill = 0)
+    shrExpandHist <- new.magpie(getRegions(magpie), getYears(magpie), fill = 0)
     for (i in 2:length(y)) {
-      shrLostHist[ , y[i], ] <- (setYears(data[, y[i], ], NULL) - setYears(data[, y[i-1], ], NULL)) / setYears(data[, y[i-1], ], NULL)
+      shrExpandHist[ , y[i], ] <- (setYears(data[, y[i], ], NULL) - setYears(data[, y[i-1], ], NULL)) / setYears(data[, y[i-1], ], NULL)
     }
     
     out <- magpie / data - 1
@@ -78,8 +78,7 @@ getCalibFactor <- function(gdx_file, mode = "cost", lowpass_filter = 1, histData
     getNames(out) <- NULL
     
     # set reward to 0 if no cropland was lost in historic data set
-    out[shrLostHist < 0] <- 0
-    out[out < 0] <- 0
+    out[shrExpandHist >= 0] <- 0
     out <- lowpass(out,i = lowpass_filter)
     out[,1,] <- 0
   }
