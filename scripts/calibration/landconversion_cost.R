@@ -54,7 +54,7 @@ getCalibFactor <- function(gdx_file, mode = "cost", lowpass_filter = 1, histData
       getNames(val) <- "crop"
       saveRDS(val, file = "calib_data.rds")
     }
-    data <- val
+    data <- val[,y,]
   }
   if (nregions(magpie) != nregions(data) | !all(getRegions(magpie) %in% getRegions(data))) {
     stop("Regions in MAgPIE do not agree with regions in reference calibration area data set!")
@@ -111,10 +111,10 @@ update_calib <- function(gdx_file, calib_accuracy = 0.01, lowpass_filter = 1, ca
   
   y <- readGDX(gdx_file,"t")
 
-  calib_correction_cost <- getCalibFactor(gdx_file, mode = "cost", lowpass_filter = lowpass_filter)
+  calib_correction_cost <- getCalibFactor(gdx_file, mode = "cost", lowpass_filter = lowpass_filter, histData = histData)
   calib_divergence_cost <- abs(calib_correction_cost - 1)
 
-  calib_correction_reward <- getCalibFactor(gdx_file, mode = "reward", lowpass_filter = lowpass_filter)
+  calib_correction_reward <- getCalibFactor(gdx_file, mode = "reward", lowpass_filter = lowpass_filter, histData = histData)
   calib_divergence_reward <- abs(calib_correction_reward)
   calib_divergence_reward[calib_correction_reward == 0] <- 0
   
