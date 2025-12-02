@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### changed
 - **inputdata** updated input data to rev4.127, including fix of FAO mass balance and processing shares where maiz to ethanol values were missing for some countries
-
+- scripts/calibration/landconversion_cost.R: Debug mode now saves listing files with iteration numbers for detailed analysis. Comprehensive logging system for calibration workflow. Improved tracking distinguishes between current and next calibration factors in output files
+- Now uses both the reward and the costs from the timestep with best fit, as the outcome can be influenced by both.
 
 ### added
 -
@@ -18,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### fixed
 - **scripts/start_functions.R** added all extra `cfg` arguments in `start_run()` to the config check call
+- **scripts/calibration/landconversion_cost.R**: Fixed a bug where the calibration factors were used not from the best iteration, but from best iteration +1. To do so, we now distingzugs distinguish between "current" vs "next" calibration factors. Fixed a bug where the parameter histData was not passed on to `getCalibFactor` (commit af42903). Fixed sign error in calibration preventing downward correction of reward values (commit f8e1fad). Fixed a bug where cached magpie4 results where used by adding automatic cache clearing of magpie4 after GAMS runs to prevent stale data issues.
 
 
 ## [4.13.0] - 2025-10-23
